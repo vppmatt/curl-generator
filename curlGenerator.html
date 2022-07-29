@@ -189,13 +189,29 @@
 
 			function sendRestRequest(method, url, data) {
 
+
+				var headersDIV =  document.getElementById("headers");
 				var responseDIV =  document.getElementById("response");
 				responseDIV.innerHTML = "sending...";
 
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
          				if (this.readyState == 4 && this.status == 200) {
-             				responseDIV.innerHTML =  '<p>Status : 200</p><p>' + this.response + '</p>';
+         					headersDIV.innerHTML = `status: 200<br>${this.getAllResponseHeaders()}`;
+             				var displayText = this.responseText;
+         					if (this.getAllResponseHeaders().includes("json")) {
+
+         						displayText =  "<pre>" + JSON.stringify(JSON.parse(this.responseText), null, 2) + "</pre>";
+         					}
+         					else if (this.getAllResponseHeaders().includes("xml")) {
+         						displayText =  '<textarea rows="20" cols="70" readonly style="border:none; overflow:scroll">' + this.responseText.replace(/&/g, '&amp;')
+         							.replace(/</g, '&lt;')
+         							.replace(/>/g, '&gt;')
+         							.replace(/"/g, '&quot;') 
+         							+ "</textarea>";
+         					}
+             				responseDIV.innerHTML =   displayText ;
+
          				}
          				else {
          					responseDIV.innerHTML =  "<p style='color:#f00;'> ERROR " + this.status + "</p><p style='color:#f00;'>" + this.response + "</p>" ;
@@ -362,6 +378,9 @@
 		<textarea id="curl" style="border: 1px solid #000; width: 600px;" rows=10> </textarea>
 
 		<h4>Response from server</h4>
+		<h6>Headers</h6>
+		<div id="headers"></div>
+		<h6>Response</h6>
 		<div id="response" style="border: 1px solid #000; width: 600px; min-height: 100px;"></div>
 	</body>
 </HTML>
