@@ -239,6 +239,14 @@
 				if(header3include === true) xhttp.setRequestHeader(header3key, header3value);
 				if(header4include === true) xhttp.setRequestHeader(header4key, header4value);
 
+				var userPassInclude = document.getElementById("userPassInclude").checked;
+				if (userPassInclude === true) {
+					var userPassU = document.getElementById("userPassU").value;
+					var userPassP = document.getElementById("userPassP").value;
+					var userPass = btoa(`${userPassU}:${userPassP}`)
+					xhttp.setRequestHeader("Authorization", `Basic ${userPass}`);
+					console.log(userPass)
+				}
 
     				xhttp.send(data);
 					responseDIV.innerHTML = "awaiting response...";
