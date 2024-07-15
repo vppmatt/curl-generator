@@ -245,7 +245,6 @@
 					var userPassP = document.getElementById("userPassP").value;
 					var userPass = btoa(`${userPassU}:${userPassP}`)
 					xhttp.setRequestHeader("Authorization", `Basic ${userPass}`);
-					console.log(userPass)
 				}
 
     				xhttp.send(data);
